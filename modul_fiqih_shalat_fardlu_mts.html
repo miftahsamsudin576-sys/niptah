@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modul MPI: Fiqih - Shalat Fardlu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        islamic: {
+                            light: '#e8f5e9',
+                            DEFAULT: '#2e7d32',
+                            dark: '#1b5e20',
+                            gold: '#fbc02d',
+                            goldDark: '#f9a825'
+                        }
+                    },
+                    boxShadow: {
+                        'card': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #f4f7f6;
+            scroll-behavior: smooth;
+        }
+        
+        .draggable {
+            cursor: grab;
+            user-select: none;
+            touch-action: none;
+        }
+        
+        .draggable:active {
+            cursor: grabbing;
+        }
+
+        .dropzone {
+            min-height: 80px;
+            border: 2px dashed #cbd5e1;
+            transition: all 0.3s ease;
+        }
+
+        .dropzone.dragover {
+            background-color: #e8f5e9;
+            border-color: #2e7d32;
+        }
+
+        .quiz-option {
+            transition: all 0.2s ease;
+        }
+        
+        .quiz-option:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .quiz-option.selected {
+            border-color: #fbc02d;
+            background-color: #fffde7;
+        }
+        
+        .quiz-option.correct {
+            border-color: #2e7d32;
+            background-color: #e8f5e9;
+            color: #1b5e20;
+        }
+        
+        .quiz-option.wrong {
+            border-color: #ef4444;
+            background-color: #fef2f2;
+            color: #991b1b;
+        }
+
+        /* Hide scrollbar for clean look in cards */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .feedback-pop {
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body class="text-gray-800 antialiased font-sans">
+
+    <nav class="bg-islamic-dark text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <i class="fas fa-mosque text-islamic-gold text-2xl"></i>
+                <div>
+                    <h1 class="font-bold text-lg leading-tight">Fiqih MTs Fase D</h1>
+                    <p class="text-xs text-islamic-gold">Modul Eksplorasi Interaktif</p>
+                </div>
+            </div>
+            <div class="text-sm hidden sm:block">
+                Provinsi Gorontalo
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-4 py-6 space-y-8">
+
+        <section class="bg-white rounded-2xl p-6 md:p-8 shadow-card border-t-4 border-islamic-gold relative overflow-hidden">
+            <div class="absolute -right-10 -top-10 text-islamic-light opacity-30 text-9xl">
+                <i class="fas fa-moon"></i>
+            </div>
+            <div class="relative z-10">
+                <span class="bg-islamic-light text-islamic-dark px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider mb-3 inline-block">Materi Pokok</span>
+                <h2 class="text-2xl md:text-3xl font-bold text-islamic-dark mb-2">Kedudukan & Ketentuan Shalat Fardlu</h2>
+                <p class="text-gray-600 mb-4 leading-relaxed">
+                    Assalamu'alaikum siswa-siswi tangguh! Shalat adalah tiang agama. Bagaikan tiang rumah adat Bantayo Poboide di Gorontalo yang kokoh menopang bangunan, shalat fardlu menopang iman kita. Mari kita pahami syarat, rukun, dan hal yang membatalkannya agar shalat kita sah dan diterima Allah SWT.
+                </p>
+                
+                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg mt-4 text-sm">
+                    <strong><i class="fas fa-bullseye text-blue-500 mr-2"></i>Tujuan Belajar:</strong> 
+                    Setelah modul ini, kamu diharapkan mampu menjelaskan dan membedakan syarat, rukun, serta perkara yang membatalkan shalat fardlu dengan tepat.
+                </div>
+            </div>
+        </section>
+
+        <div class="grid md:grid-cols-2 gap-6">
+            <!-- Syarat Shalat -->
+            <section class="bg-white rounded-2xl p-6 shadow-card">
+                <h3 class="text-xl font-bold text-islamic flex items-center gap-2 mb-4 border-b pb-2">
+                    <i class="fas fa-clipboard-check text-islamic-gold"></i> Syarat Sah Shalat
+                </h3>
+                <p class="text-sm text-gray-600 mb-4">Hal-hal yang <strong>harus dipenuhi sebelum</strong> memulai shalat. Jika tidak terpenuhi, shalat tidak sah.</p>
+                <ul class="space-y-3 text-sm">
+                    <li class="flex items-start gap-3 bg-gray-50 p-2 rounded">
+                        <i class="fas fa-check-circle text-green-500 mt-0.5"></i>
+                        <span><strong>Suci dari Hadas (Kecil & Besar)</strong><br>Melalui wudhu, mandi wajib, atau tayamum (jika tidak ada air, misal saat kemarau).</span>
+                    </li>
+                    <li class="flex items-start gap-3 bg-gray-50 p-2 rounded">
+                        <i class="fas fa-check-circle text-green-500 mt-0.5"></i>
+                        <span><strong>Suci dari Najis</strong><br>Baik pada badan, pakaian, maupun tempat shalat.</span>
+                    </li>
+                    <li class="flex items-start gap-3 bg-gray-50 p-2 rounded">
+                        <i class="fas fa-check-circle text-green-500 mt-0.5"></i>
+                        <span><strong>Menutup Aurat</strong><br>Laki-laki (pusar-lutut), Perempuan (seluruh tubuh kecuali wajah & telapak tangan).</span>
+                    </li>
+                    <li class="flex items-start gap-3 bg-gray-50 p-2 rounded">
+                        <i class="fas fa-check-circle text-green-500 mt-0.5"></i>
+                        <span><strong>Masuk Waktu Shalat</strong><br>Tidak sah jika dikerjakan sebelum waktunya.</span>
+                    </li>
+                    <li class="flex items-start gap-3 bg-gray-50 p-2 rounded">
+                        <i class="fas fa-check-circle text-green-500 mt-0.5"></i>
+                        <span><strong>Menghadap Kiblat</strong><br>Menghadap ke arah Ka'bah di Makkah.</span>
+                    </li>
+                </ul>
+            </section>
+
+            <!-- Rukun Shalat -->
+            <section class="bg-white rounded-2xl p-6 shadow-card">
+                <h3 class="text-xl font-bold text-islamic flex items-center gap-2 mb-4 border-b pb-2">
+                    <i class="fas fa-list-ol text-islamic-gold"></i> Rukun Shalat
+                </h3>
+                <p class="text-sm text-gray-600 mb-4">Hal-hal yang <strong>harus dilakukan di dalam</strong> shalat. Tertinggal satu saja (sengaja/lupa), shalat batal.</p>
+                <div class="h-64 overflow-y-auto hide-scrollbar pr-2 space-y-2 text-sm">
+                    <div class="bg-blue-50 p-2 rounded border-l-2 border-blue-400">1. Niat</div>
+                    <div class="bg-blue-50 p-2 rounded border-l-2 border-blue-400">2. Berdiri (bagi yang mampu)</div>
+                    <div class="bg-blue-50 p-2 rounded border-l-2 border-blue-400">3. Takbiratul Ihram</div>
+                    <div class="bg-blue-50 p-2 rounded border-l-2 border-blue-400">4. Membaca Surat Al-Fatihah</div>
+                    <div class="bg-blue-50 p-2 rounded border-l-2 border-blue-400">5. Ruku' dengan Thuma'ninah (tenang sejenak)</div>
+                    <div class="bg-blue-50 p-2 rounded border-l-2 border-blue-400">6. I'tidal dengan Thuma'ninah</div>
+                    <div class="bg-blue-50 p-2 rounded border-l-2 border-blue-400">7. Sujud dua kali dengan Thuma'ninah</div>
+                    <div class="bg-blue-50 p-2 rounded border-l-2 border-blue-400">8. Duduk di antara dua sujud dgn Thuma'ninah</div>
+                    <div class="bg-blue-50 p-2 rounded border-l-2 border-blue-400">9. Duduk Tasyahud Akhir</div>
+                    <div class="bg-blue-50 p-2 rounded border-l-2 border-blue-400">10. Membaca Tasyahud Akhir</div>
+                    <div class="bg-blue-50 p-2 rounded border-l-2 border-blue-400">11. Membaca Shalawat Nabi (saat tasyahud akhir)</div>
+                    <div class="bg-blue-50 p-2 rounded border-l-2 border-blue-400">12. Mengucapkan Salam pertama</div>
+                    <div class="bg-blue-50 p-2 rounded border-l-2 border-blue-400">13. Tertib (berurutan)</div>
+                </div>
+                <p class="text-xs text-gray-500 mt-2 text-center italic">*Scroll untuk melihat semua rukun</p>
+            </section>
+        </div>
+
+        <section class="bg-white rounded-2xl p-6 shadow-card border-l-4 border-red-500">
+            <h3 class="text-xl font-bold text-red-700 flex items-center gap-2 mb-4">
+                <i class="fas fa-ban"></i> Perkara yang Membatalkan Shalat
+            </h3>
+            <p class="text-sm text-gray-600 mb-4">Hindari hal-hal berikut saat mengerjakan shalat fardlu:</p>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm text-center">
+                <div class="bg-red-50 p-3 rounded-lg border border-red-100 flex flex-col items-center justify-center gap-2">
+                    <i class="fas fa-comment-dots text-red-400 text-xl"></i>
+                    <span>Berbicara Sengaja</span>
+                </div>
+                <div class="bg-red-50 p-3 rounded-lg border border-red-100 flex flex-col items-center justify-center gap-2">
+                    <i class="fas fa-running text-red-400 text-xl"></i>
+                    <span>Banyak Bergerak (3x berturut-turut)</span>
+                </div>
+                <div class="bg-red-50 p-3 rounded-lg border border-red-100 flex flex-col items-center justify-center gap-2">
+                    <i class="fas fa-poop text-red-400 text-xl"></i>
+                    <span>Terkena Najis / Berhadats</span>
+                </div>
+                <div class="bg-red-50 p-3 rounded-lg border border-red-100 flex flex-col items-center justify-center gap-2">
+                    <i class="fas fa-hamburger text-red-400 text-xl"></i>
+                    <span>Makan & Minum</span>
+                </div>
+                <div class="bg-red-50 p-3 rounded-lg border border-red-100 flex flex-col items-center justify-center gap-2">
+                    <i class="fas fa-tshirt text-red-400 text-xl"></i>
+                    <span>Terbuka Aurat Sengaja</span>
+                </div>
+                <div class="bg-red-50 p-3 rounded-lg border border-red-100 flex flex-col items-center justify-center gap-2">
+                    <i class="fas fa-compass text-red-400 text-xl"></i>
+                    <span>Membelakangi Kiblat</span>
+                </div>
+                <div class="bg-red-50 p-3 rounded-lg border border-red-100 flex flex-col items-center justify-center gap-2">
+                    <i class="fas fa-laugh-squint text-red-400 text-xl"></i>
+                    <span>Tertawa Terbahak</span>
+                </div>
+                <div class="bg-red-50 p-3 rounded-lg border border-red-100 flex flex-col items-center justify-center gap-2">
+                    <i class="fas fa-times-circle text-red-400 text-xl"></i>
+                    <span>Meninggalkan Rukun</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-islamic-light rounded-2xl p-6 shadow-card">
+            <h3 class="text-xl font-bold text-islamic-dark flex items-center gap-2 mb-2">
+                <i class="fas fa-gamepad text-islamic-gold"></i> Aktivitas Kinestetik: Kelompokkan!
+            </h3>
+            <p class="text-sm text-gray-700 mb-6">Tarik (Drag) kotak di bawah ini ke keranjang yang tepat. Ingat: Syarat dilakukan SEBELUM shalat, Rukun dilakukan DI DALAM shalat.</p>
+
+            <!-- Draggable Items -->
+            <div class="flex flex-wrap gap-2 mb-6" id="draggable-container">
+                <div draggable="true" data-type="syarat" class="draggable bg-white px-4 py-2 rounded shadow text-sm font-semibold border-l-4 border-islamic-gold cursor-grab active:cursor-grabbing">Menutup Aurat</div>
+                <div draggable="true" data-type="rukun" class="draggable bg-white px-4 py-2 rounded shadow text-sm font-semibold border-l-4 border-blue-500 cursor-grab active:cursor-grabbing">Membaca Al-Fatihah</div>
+                <div draggable="true" data-type="syarat" class="draggable bg-white px-4 py-2 rounded shadow text-sm font-semibold border-l-4 border-islamic-gold cursor-grab active:cursor-grabbing">Suci dari Najis</div>
+                <div draggable="true" data-type="rukun" class="draggable bg-white px-4 py-2 rounded shadow text-sm font-semibold border-l-4 border-blue-500 cursor-grab active:cursor-grabbing">Ruku'</div>
+                <div draggable="true" data-type="syarat" class="draggable bg-white px-4 py-2 rounded shadow text-sm font-semibold border-l-4 border-islamic-gold cursor-grab active:cursor-grabbing">Menghadap Kiblat</div>
+                <div draggable="true" data-type="rukun" class="draggable bg-white px-4 py-2 rounded shadow text-sm font-semibold border-l-4 border-blue-500 cursor-grab active:cursor-grabbing">Takbiratul Ihram</div>
+            </div>
+
+            <!-- Drop Zones -->
+            <div class="grid grid-cols-2 gap-4">
+                <div class="bg-white rounded-lg p-4 shadow-inner">
+                    <h4 class="text-center font-bold text-islamic mb-3 border-b-2 border-islamic-gold pb-1">Keranjang Syarat Sah</h4>
+                    <div id="syarat-zone" class="dropzone rounded p-2 flex flex-col gap-2" data-target="syarat"></div>
+                </div>
+                <div class="bg-white rounded-lg p-4 shadow-inner">
+                    <h4 class="text-center font-bold text-blue-700 mb-3 border-b-2 border-blue-400 pb-1">Keranjang Rukun</h4>
+                    <div id="rukun-zone" class="dropzone rounded p-2 flex flex-col gap-2" data-target="rukun"></div>
+                </div>
+            </div>
+            
+            <div id="drag-feedback" class="mt-4 p-3 rounded hidden text-center font-semibold text-sm"></div>
+            
+            <div class="mt-4 text-center">
+                <button id="reset-drag" class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm transition font-medium hidden">
+                    <i class="fas fa-undo mr-1"></i> Ulangi Aktivitas
+                </button>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-2xl p-6 shadow-card mb-10" id="kuis-section">
+            <h3 class="text-xl font-bold text-islamic-dark flex items-center gap-2 mb-2">
+                <i class="fas fa-tasks text-islamic-gold"></i> Evaluasi Mandiri (Kuis)
+            </h3>
+            <p class="text-sm text-gray-600 mb-6 border-b pb-4">Uji pemahamanmu dengan menjawab soal-soal evaluasi di bawah ini.</p>
+
+            <div id="quiz-container">
+                <!-- Quiz Question Template (Populated by JS) -->
+            </div>
+
+            <div id="quiz-navigation" class="mt-6 flex justify-between items-center hidden">
+                <span id="quiz-progress" class="text-sm font-semibold text-gray-500">Soal 1 dari 5</span>
+                <button id="next-btn" class="bg-islamic hover:bg-islamic-dark text-white px-6 py-2 rounded-lg shadow transition font-medium">
+                    Selanjutnya <i class="fas fa-arrow-right ml-1"></i>
+                </button>
+            </div>
+
+            <!-- Quiz Result -->
+            <div id="quiz-result" class="hidden text-center py-8">
+                <div class="inline-flex items-center justify-center w-20 h-20 bg-islamic-light text-islamic-dark rounded-full mb-4">
+                    <i class="fas fa-award text-4xl"></i>
+                </div>
+                <h4 class="text-2xl font-bold text-gray-800 mb-2">Evaluasi Selesai!</h4>
+                <p class="text-lg mb-4">Skor Kamu: <span id="final-score" class="font-bold text-islamic text-3xl"></span>/100</p>
+                <div id="score-message" class="p-4 rounded-lg mb-6 text-sm max-w-md mx-auto"></div>
+                
+                <button id="retry-btn" class="bg-islamic hover:bg-islamic-dark text-white px-6 py-2 rounded-lg shadow transition font-medium">
+                    <i class="fas fa-redo mr-1"></i> Coba Lagi
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-800 text-gray-400 py-6 text-center text-xs mt-10">
+        <p>&copy; 2026 Modul MPI Fiqih MTs - Kanwil Kemenag Prov. Gorontalo.</p>
+        <p class="mt-1">Dirancang khusus untuk pembelajaran offline interaktif.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            /* --- DRAG AND DROP LOGIC (Touch Support Included) --- */
+            const draggables = document.querySelectorAll('.draggable');
+            const dropzones = document.querySelectorAll('.dropzone');
+            const dragFeedback = document.getElementById('drag-feedback');
+            const dragContainer = document.getElementById('draggable-container');
+            const resetDragBtn = document.getElementById('reset-drag');
+            
+            let draggedItem = null;
+            let correctPlacements = 0;
+            const totalItems = draggables.length;
+
+            // HTML5 Drag Events (Mouse)
+            draggables.forEach(item => {
+                item.addEventListener('dragstart', function() {
+                    draggedItem = this;
+                    setTimeout(() => this.classList.add('opacity-50'), 0);
+                });
+
+                item.addEventListener('dragend', function() {
+                    this.classList.remove('opacity-50');
+                    draggedItem = null;
+                });
+                
+                // Touch Events (Mobile)
+                item.addEventListener('touchstart', handleTouchStart, {passive: false});
+                item.addEventListener('touchmove', handleTouchMove, {passive: false});
+                item.addEventListener('touchend', handleTouchEnd);
+            });
+
+            dropzones.forEach(zone => {
+                zone.addEventListener('dragover', function(e) {
+                    e.preventDefault(); // Necessary to allow dropping
+                    this.classList.add('dragover');
+                });
+
+                zone.addEventListener('dragleave', function() {
+                    this.classList.remove('dragover');
+                });
+
+                zone.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                    this.classList.remove('dragover');
+                    if (draggedItem) {
+                        handleDrop(draggedItem, this);
+                    }
+                });
+            });
+
+            // Touch Handling Functions
+            let initialX, initialY, currentX, currentY;
+            let activeDropzone = null;
+
+            function handleTouchStart(e) {
+                // e.preventDefault(); // Let default scrolling happen unless moving horizontally/significantly
+                draggedItem = this;
+                const touch = e.touches[0];
+                initialX = touch.clientX - this.offsetLeft;
+                initialY = touch.clientY - this.offsetTop;
+                
+                // Visual feedback for touch start
+                this.style.opacity = '0.7';
+                this.style.position = 'absolute';
+                this.style.zIndex = '1000';
+            }
+
+            function handleTouchMove(e) {
+                if (!draggedItem) return;
+                e.preventDefault(); // Prevent scrolling while dragging
+                
+                const touch = e.touches[0];
+                currentX = touch.clientX - initialX;
+                currentY = touch.clientY - initialY;
+                
+                draggedItem.style.left = currentX + 'px';
+                draggedItem.style.top = currentY + 'px';
+
+                // Highlight dropzone underneath
+                let elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
+                activeDropzone = null;
+                
+                dropzones.forEach(zone => {
+                    zone.classList.remove('dragover');
+                    if (zone.contains(elementBelow) || zone === elementBelow) {
+                        zone.classList.add('dragover');
+                        activeDropzone = zone;
+                    }
+                });
+            }
+
+            function handleTouchEnd(e) {
+                if (!draggedItem) return;
+                
+                draggedItem.style.opacity = '1';
+                draggedItem.style.position = 'static';
+                draggedItem.style.zIndex = '1';
+                draggedItem.style.left = 'auto';
+                draggedItem.style.top = 'auto';
+
+                dropzones.forEach(zone => zone.classList.remove('dragover'));
+
+                if (activeDropzone) {
+                    handleDrop(draggedItem, activeDropzone);
+                }
+                draggedItem = null;
+            }
+
+            function handleDrop(item, zone) {
+                const itemType = item.getAttribute('data-type');
+                const zoneTarget = zone.getAttribute('data-target');
+
+                if (itemType === zoneTarget) {
+                    // Correct!
+                    zone.appendChild(item);
+                    item.draggable = false; // Disable further dragging
+                    item.removeEventListener('touchstart', handleTouchStart); // Remove touch listener
+                    item.classList.remove('cursor-grab', 'active:cursor-grabbing');
+                    item.classList.add('cursor-default', 'bg-gray-100', 'text-gray-500');
+                    
+                    showDragFeedback(`Benar! "${item.innerText}" adalah ${itemType === 'syarat' ? 'Syarat Sah' : 'Rukun'}.`, 'success');
+                    correctPlacements++;
+                    
+                    if (correctPlacements === totalItems) {
+                        setTimeout(() => {
+                            showDragFeedback("Alhamdulillah! Kamu berhasil mengelompokkan semuanya dengan benar. Lanjut ke Kuis!", 'success', true);
+                            resetDragBtn.classList.remove('hidden');
+                        }, 500);
+                    }
+                } else {
+                    // Wrong!
+                    showDragFeedback(`Kurang tepat. "${item.innerText}" bukan ${zoneTarget === 'syarat' ? 'Syarat Sah' : 'Rukun'}. Coba lagi!`, 'error');
+                    // Briefly highlight red
+                    item.classList.add('bg-red-100');
+                    setTimeout(() => item.classList.remove('bg-red-100'), 500);
+                }
+            }
+
+            function showDragFeedback(message, type, persistent = false) {
+                dragFeedback.innerText = message;
+                dragFeedback.className = `mt-4 p-3 rounded text-center font-semibold text-sm feedback-pop block ${type === 'success' ? 'bg-green-100 text-green-800 border border-green-300' : 'bg-red-100 text-red-800 border border-red-300'}`;
+                
+                if (!persistent) {
+                    setTimeout(() => {
+                        dragFeedback.classList.add('hidden');
+                    }, 3000);
+                }
+            }
+
+            resetDragBtn.addEventListener('click', () => {
+                draggables.forEach(item => {
+                    dragContainer.appendChild(item);
+                    item.draggable = true;
+                    item.classList.add('cursor-grab', 'active:cursor-grabbing');
+                    item.classList.remove('cursor-default', 'bg-gray-100', 'text-gray-500');
+                    // Re-add touch listener
+                    item.addEventListener('touchstart', handleTouchStart, {passive: false});
+                });
+                correctPlacements = 0;
+                dragFeedback.classList.add('hidden');
+                resetDragBtn.classList.add('hidden');
+            });
+
+
+            /* --- QUIZ LOGIC --- */
+            const quizData = [
+                {
+                    type: "multiple_choice",
+                    question: "Amir sedang membantu ayahnya panen jagung di kebun daerah Pulubala. Tiba-tiba terdengar adzan Dzuhur. Baju Amir kotor terkena tanah dan sedikit getah tanaman, namun tidak terkena kotoran hewan atau najis lainnya. Apakah shalat Amir sah jika ia shalat dengan baju tersebut setelah wudhu?",
+                    options: [
+                        "Tidak sah, karena syarat sah shalat adalah baju harus bersih dari segala kotoran.",
+                        "Sah, karena tanah dan getah tanaman bukan termasuk najis yang membatalkan syarat shalat.",
+                        "Tidak sah, harus pulang dulu mengganti baju putih.",
+                        "Sah, asalkan Amir membaca niat dua kali."
+                    ],
+                    correct: 1,
+                    explanation: "Syarat sah shalat adalah suci dari 'najis' (seperti kotoran hewan/manusia, darah, dll). Kotoran biasa seperti tanah atau lumpur (selama suci) tidak membatalkan syarat sah shalat."
+                },
+                {
+                    type: "true_false",
+                    question: "Membaca doa Iftitah (sebelum Al-Fatihah) adalah bagian dari Rukun Shalat. Jika sengaja ditinggalkan, shalatnya otomatis batal.",
+                    correct: false,
+                    explanation: "Salah (False). Doa Iftitah hukumnya Sunnah, bukan Rukun. Jika ditinggalkan (sengaja atau lupa), shalat tetap sah dan tidak batal."
+                },
+                {
+                    type: "interactive_order",
+                    question: "Urutkan rukun fi'li (perbuatan) di bawah ini sesuai dengan urutan pelaksanaan shalat yang benar setelah membaca Al-Fatihah. (Geser/Drag ke posisi yang tepat)",
+                    items: [
+                        { id: "i1", text: "Sujud Pertama" },
+                        { id: "i2", text: "I'tidal" },
+                        { id: "i3", text: "Ruku'" },
+                        { id: "i4", text: "Duduk di Antara Dua Sujud" }
+                    ],
+                    correctOrder: ["i3", "i2", "i1", "i4"],
+                    explanation: "Urutan yang benar setelah Al-Fatihah adalah: Ruku' -> I'tidal -> Sujud Pertama -> Duduk di Antara Dua Sujud."
+                },
+                {
+                    type: "true_false",
+                    question: "Tertawa terbahak-bahak saat sedang melaksanakan shalat fardlu dapat membatalkan shalat.",
+                    correct: true,
+                    explanation: "Benar (True). Tertawa terbahak-bahak atau bersuara keras membatalkan shalat karena termasuk perbuatan yang menghilangkan kekhusyu'an dan melanggar adab shalat."
+                },
+                {
+                    type: "multiple_choice",
+                    question: "Saat shalat Maghrib berjamaah di masjid pesisir Kwandang, seekor nyamuk besar menggigit tangan Budi. Budi secara refleks menampar nyamuk tersebut sekali dengan keras hingga mati. Apakah shalat Budi batal?",
+                    options: [
+                        "Batal, karena Budi membunuh makhluk hidup saat shalat.",
+                        "Tidak batal, karena itu hanya satu gerakan kecil yang tidak berturut-turut tiga kali.",
+                        "Batal, karena tangan Budi terkena darah nyamuk (najis).",
+                        "Tidak batal, asalkan Budi tidak bersuara mengaduh."
+                    ],
+                    correct: 1,
+                    explanation: "Banyak bergerak yang membatalkan shalat (menurut Madzhab Syafi'i) adalah gerakan besar (seperti melangkah atau mengayun tangan) sebanyak 3 kali berturut-turut. Menampar nyamuk satu kali refleks tidak membatalkan shalat."
+                }
+            ];
+
+            const quizContainer = document.getElementById('quiz-container');
+            const nextBtn = document.getElementById('next-btn');
+            const quizProgress = document.getElementById('quiz-progress');
+            const quizNav = document.getElementById('quiz-navigation');
+            const quizResult = document.getElementById('quiz-result');
+            const finalScoreEl = document.getElementById('final-score');
+            const scoreMsgEl = document.getElementById('score-message');
+            const retryBtn = document.getElementById('retry-btn');
+
+            let currentQuestion = 0;
+            let score = 0;
+            let hasAnswered = false;
+
+            function loadQuestion() {
+                hasAnswered = false;
+                const q = quizData[currentQuestion];
+                let questionHTML = `
+                    <div class="mb-4">
+                        <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2 py-1 rounded">Soal ${currentQuestion + 1} (${getQuestionTypeLabel(q.type)})</span>
+                    </div>
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4 leading-relaxed">${q.question}</h4>
+                `;
+
+                if (q.type === 'multiple_choice') {
+                    questionHTML += `
+                        <div class="space-y-3" id="options-container">
+                            ${q.options.map((opt, index) => `
+                                <div class="quiz-option border-2 border-gray-200 rounded-lg p-3 cursor-pointer flex items-start gap-3 bg-gray-50" data-index="${index}">
+                                    <div class="w-6 h-6 rounded-full border-2 border-gray-400 flex items-center justify-center flex-shrink-0 mt-0.5 option-circle"></div>
+                                    <span class="text-sm">${opt}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                } else if (q.type === 'true_false') {
+                    questionHTML += `
+                        <div class="flex gap-4" id="options-container">
+                            <div class="quiz-option flex-1 border-2 border-gray-200 rounded-lg p-4 cursor-pointer flex flex-col items-center gap-2 bg-gray-50" data-answer="true">
+                                <i class="fas fa-check-circle text-3xl text-gray-400 tf-icon"></i>
+                                <span class="font-bold text-lg">Benar</span>
+                            </div>
+                            <div class="quiz-option flex-1 border-2 border-gray-200 rounded-lg p-4 cursor-pointer flex flex-col items-center gap-2 bg-gray-50" data-answer="false">
+                                <i class="fas fa-times-circle text-3xl text-gray-400 tf-icon"></i>
+                                <span class="font-bold text-lg">Salah</span>
+                            </div>
+                        </div>
+                    `;
+                } else if (q.type === 'interactive_order') {
+                    // Simple drag drop ordering
+                    questionHTML += `
+                        <div class="space-y-2 mb-4" id="order-container">
+                            ${q.items.map(item => `
+                                <div class="order-item bg-white border-2 border-gray-300 p-3 rounded-lg flex items-center gap-3 cursor-move hover:border-islamic-gold shadow-sm" draggable="true" data-id="${item.id}">
+                                    <i class="fas fa-grip-vertical text-gray-400"></i>
+                                    <span class="text-sm font-medium flex-1">${item.text}</span>
+                                    <span class="order-number text-xs font-bold bg-gray-200 text-gray-600 px-2 py-1 rounded"></span>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <button id="check-order-btn" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow text-sm font-medium w-full">Cek Urutan</button>
+                    `;
+                }
+
+                questionHTML += `<div id="explanation-box" class="mt-4 p-4 rounded-lg text-sm hidden feedback-pop"></div>`;
+                quizContainer.innerHTML = questionHTML;
+
+                // Set up interactions based on type
+                if (q.type === 'multiple_choice' || q.type === 'true_false') {
+                    const options = document.querySelectorAll('.quiz-option');
+                    options.forEach(opt => opt.addEventListener('click', (e) => handleOptionClick(e, q.type)));
+                } else if (q.type === 'interactive_order') {
+                    setupOrderInteraction();
+                }
+
+                quizNav.classList.remove('hidden');
+                nextBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                nextBtn.disabled = true;
+                
+                if (currentQuestion === quizData.length - 1) {
+                    nextBtn.innerHTML = 'Lihat Hasil <i class="fas fa-flag-checkered ml-1"></i>';
+                } else {
+                    nextBtn.innerHTML = 'Selanjutnya <i class="fas fa-arrow-right ml-1"></i>';
+                }
+                quizProgress.innerText = `Soal ${currentQuestion + 1} dari ${quizData.length}`;
+            }
+
+            function getQuestionTypeLabel(type) {
+                switch(type) {
+                    case 'multiple_choice': return 'Pilihan Ganda';
+                    case 'true_false': return 'Benar / Salah';
+                    case 'interactive_order': return 'Susun Urutan';
+                    default: return 'Soal';
+                }
+            }
+
+            function handleOptionClick(e, type) {
+                if (hasAnswered) return;
+                
+                const selectedEl = e.currentTarget;
+                const q = quizData[currentQuestion];
+                let isCorrect = false;
+
+                if (type === 'multiple_choice') {
+                    const selectedIndex = parseInt(selectedEl.getAttribute('data-index'));
+                    isCorrect = selectedIndex === q.correct;
+                    
+                    const allOptions = document.querySelectorAll('.quiz-option');
+                    allOptions.forEach((opt, index) => {
+                        opt.classList.remove('hover:-translate-y-1', 'cursor-pointer');
+                        const circle = opt.querySelector('.option-circle');
+                        
+                        if (index === q.correct) {
+                            opt.classList.add('correct');
+                            circle.classList.replace('border-gray-400', 'border-green-500');
+                            circle.innerHTML = '<i class="fas fa-check text-green-600 text-xs"></i>';
+                        } else if (index === selectedIndex && !isCorrect) {
+                            opt.classList.add('wrong');
+                            circle.classList.replace('border-gray-400', 'border-red-500');
+                            circle.innerHTML = '<i class="fas fa-times text-red-600 text-xs"></i>';
+                        }
+                    });
+
+                } else if (type === 'true_false') {
+                    const selectedAnswer = selectedEl.getAttribute('data-answer') === 'true';
+                    isCorrect = selectedAnswer === q.correct;
+
+                    const allOptions = document.querySelectorAll('.quiz-option');
+                    allOptions.forEach((opt) => {
+                        opt.classList.remove('hover:-translate-y-1', 'cursor-pointer');
+                        const icon = opt.querySelector('.tf-icon');
+                        const optAnswer = opt.getAttribute('data-answer') === 'true';
+
+                        if (optAnswer === q.correct) {
+                            opt.classList.add('correct', 'border-green-500', 'bg-green-50');
+                            icon.classList.replace('text-gray-400', 'text-green-600');
+                        } else if (optAnswer === selectedAnswer && !isCorrect) {
+                            opt.classList.add('wrong', 'border-red-500', 'bg-red-50');
+                            icon.classList.replace('text-gray-400', 'text-red-600');
+                        }
+                    });
+                }
+
+                finalizeAnswer(isCorrect, q.explanation);
+            }
+
+            // Simple HTML5 Drag and Drop for ordering
+            function setupOrderInteraction() {
+                const container = document.getElementById('order-container');
+                let draggedItem = null;
+
+                container.addEventListener('dragstart', e => {
+                    draggedItem = e.target.closest('.order-item');
+                    draggedItem.classList.add('opacity-50');
+                });
+
+                container.addEventListener('dragend', e => {
+                    draggedItem.classList.remove('opacity-50');
+                    draggedItem = null;
+                    updateOrderNumbers();
+                });
+
+                container.addEventListener('dragover', e => {
+                    e.preventDefault();
+                    const afterElement = getDragAfterElement(container, e.clientY);
+                    if (draggedItem == null) return;
+                    
+                    if (afterElement == null) {
+                        container.appendChild(draggedItem);
+                    } else {
+                        container.insertBefore(draggedItem, afterElement);
+                    }
+                });
+
+                function getDragAfterElement(container, y) {
+                    const draggableElements = [...container.querySelectorAll('.order-item:not(.opacity-50)')];
+                    return draggableElements.reduce((closest, child) => {
+                        const box = child.getBoundingClientRect();
+                        const offset = y - box.top - box.height / 2;
+                        if (offset < 0 && offset > closest.offset) {
+                            return { offset: offset, element: child };
+                        } else {
+                            return closest;
+                        }
+                    }, { offset: Number.NEGATIVE_INFINITY }).element;
+                }
+
+                updateOrderNumbers();
+
+                document.getElementById('check-order-btn').addEventListener('click', () => {
+                    if (hasAnswered) return;
+                    
+                    const q = quizData[currentQuestion];
+                    const currentOrderEls = document.querySelectorAll('.order-item');
+                    const currentOrderIds = Array.from(currentOrderEls).map(el => el.getAttribute('data-id'));
+                    
+                    // Check if arrays match
+                    const isCorrect = currentOrderIds.length === q.correctOrder.length && 
+                                      currentOrderIds.every((val, index) => val === q.correctOrder[index]);
+
+                    // Visual feedback for items
+                    currentOrderEls.forEach((el, index) => {
+                        el.draggable = false;
+                        el.classList.remove('cursor-move', 'hover:border-islamic-gold');
+                        if (el.getAttribute('data-id') === q.correctOrder[index]) {
+                            el.classList.add('border-green-500', 'bg-green-50');
+                        } else {
+                            el.classList.add('border-red-500', 'bg-red-50');
+                        }
+                    });
+
+                    document.getElementById('check-order-btn').classList.add('hidden');
+                    finalizeAnswer(isCorrect, q.explanation);
+                });
+            }
+
+            function updateOrderNumbers() {
+                const numbers = document.querySelectorAll('.order-number');
+                numbers.forEach((num, index) => {
+                    num.innerText = index + 1;
+                });
+            }
+
+            function finalizeAnswer(isCorrect, explanation) {
+                hasAnswered = true;
+                nextBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                nextBtn.disabled = false;
+
+                if (isCorrect) score += 20; // Assuming 5 questions
+
+                const explanationBox = document.getElementById('explanation-box');
+                explanationBox.classList.remove('hidden');
+                if (isCorrect) {
+                    explanationBox.classList.add('bg-green-50', 'text-green-800', 'border', 'border-green-200');
+                    explanationBox.innerHTML = `<strong><i class="fas fa-check-circle mr-1"></i> Tepat Sekali!</strong><br>${explanation}`;
+                } else {
+                    explanationBox.classList.add('bg-orange-50', 'text-orange-800', 'border', 'border-orange-200');
+                    explanationBox.innerHTML = `<strong><i class="fas fa-exclamation-triangle mr-1"></i> Kurang Tepat.</strong><br>${explanation}`;
+                }
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (!hasAnswered) return;
+                
+                currentQuestion++;
+                if (currentQuestion < quizData.length) {
+                    loadQuestion();
+                } else {
+                    showResults();
+                }
+            });
+
+            function showResults() {
+                quizContainer.innerHTML = '';
+                quizNav.classList.add('hidden');
+                quizResult.classList.remove('hidden');
+                
+                finalScoreEl.innerText = score;
+                
+                if (score >= 80) {
+                    scoreMsgEl.className = 'p-4 rounded-lg mb-6 text-sm max-w-md mx-auto bg-green-100 text-green-800';
+                    scoreMsgEl.innerHTML = '<strong>Masya Allah, Luar Biasa!</strong> Pemahamanmu tentang Fiqih Shalat sangat baik. Pertahankan belajarmu!';
+                } else if (score >= 60) {
+                    scoreMsgEl.className = 'p-4 rounded-lg mb-6 text-sm max-w-md mx-auto bg-blue-100 text-blue-800';
+                    scoreMsgEl.innerHTML = '<strong>Alhamdulillah, Cukup Baik.</strong> Kamu sudah memahami dasar-dasarnya. Yuk baca lagi materinya agar lebih sempurna.';
+                } else {
+                    scoreMsgEl.className = 'p-4 rounded-lg mb-6 text-sm max-w-md mx-auto bg-red-100 text-red-800';
+                    scoreMsgEl.innerHTML = '<strong>Jangan Menyerah!</strong> Mari ulangi membaca syarat dan rukun shalat di bagian atas, lalu coba kuis ini lagi.';
+                }
+            }
+
+            retryBtn.addEventListener('click', () => {
+                currentQuestion = 0;
+                score = 0;
+                quizResult.classList.add('hidden');
+                loadQuestion();
+                document.getElementById('kuis-section').scrollIntoView({ behavior: 'smooth' });
+            });
+
+            // Initialize First Question
+            loadQuestion();
+        });
+    </script>
+</body>
+</html>
